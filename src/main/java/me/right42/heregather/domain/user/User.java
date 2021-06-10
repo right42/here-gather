@@ -12,12 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.right42.heregather.domain.common.BaseEntity;
+import me.right42.heregather.domain.user.type.UserStatus;
+import me.right42.heregather.domain.user.type.UserType;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue
