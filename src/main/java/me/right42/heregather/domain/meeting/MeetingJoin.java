@@ -3,6 +3,7 @@ package me.right42.heregather.domain.meeting;
 import static javax.persistence.FetchType.*;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -20,6 +21,7 @@ import me.right42.heregather.domain.common.BaseEntity;
 import me.right42.heregather.domain.meeting.type.MeetingJoinStatus;
 import me.right42.heregather.domain.user.User;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

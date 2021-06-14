@@ -1,6 +1,7 @@
 package me.right42.heregather.domain.interest;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -14,7 +15,7 @@ import me.right42.heregather.domain.common.BaseEntity;
 /**
  * 관심 카테고리
  */
-
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

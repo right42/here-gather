@@ -3,6 +3,7 @@ package me.right42.heregather.domain.role;
 import static javax.persistence.FetchType.*;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,6 +18,7 @@ import me.right42.heregather.domain.common.BaseEntity;
 import me.right42.heregather.domain.group.GroupUser;
 import me.right42.heregather.domain.user.User;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
