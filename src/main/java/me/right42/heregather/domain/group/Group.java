@@ -1,6 +1,7 @@
 package me.right42.heregather.domain.group;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -16,6 +17,7 @@ import me.right42.heregather.domain.common.BaseEntity;
  * 모임
  */
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

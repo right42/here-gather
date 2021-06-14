@@ -1,11 +1,11 @@
 package me.right42.heregather.domain.user;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +16,7 @@ import me.right42.heregather.domain.common.BaseEntity;
 import me.right42.heregather.domain.user.type.UserStatus;
 import me.right42.heregather.domain.user.type.UserType;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class User extends BaseEntity {
 	@Column(name = "user_id")
 	private Long id;
 
-	private String userId;
+	private String userSnsId;
 
 	@Enumerated(EnumType.STRING)
 	private UserType userType;

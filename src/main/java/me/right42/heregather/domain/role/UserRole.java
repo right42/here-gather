@@ -3,6 +3,7 @@ package me.right42.heregather.domain.role;
 import static javax.persistence.FetchType.*;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import me.right42.heregather.domain.common.BaseEntity;
 import me.right42.heregather.domain.user.User;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

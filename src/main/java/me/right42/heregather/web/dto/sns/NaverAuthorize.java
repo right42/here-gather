@@ -1,11 +1,11 @@
-package me.right42.heregather.web.user.login.dto;
+package me.right42.heregather.web.dto.sns;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class NaverAuthorizeResponse {
+public class NaverAuthorize {
 
 	private String code;
 
