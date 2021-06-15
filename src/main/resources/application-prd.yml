@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+  datasource:
+    url: jdbc:postgresql://10.178.0.2:5432/heregather
+    username: right42
+    password: right42
+    platform: postgres
