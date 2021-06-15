@@ -1,7 +1,9 @@
 package me.right42.heregather.web.group;
 
+import static me.right42.heregather.ApiDocumentUtils.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
@@ -11,12 +13,14 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import me.right42.heregather.domain.group.Group;
@@ -29,6 +33,7 @@ import me.right42.heregather.web.dto.group.GroupUpdateDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 class GroupControllerTest {
 
 	@Autowired
@@ -39,6 +44,7 @@ class GroupControllerTest {
 
 	@Test
 	@Rollback
+	@Transactional
 	void 그룹생성_테스트() throws Exception {
 		GroupCreateDto groupCreateDto = new GroupCreateDto();
 		groupCreateDto.setGroupName("test");
@@ -47,14 +53,29 @@ class GroupControllerTest {
 		groupCreateDto.setGroupInterests(Arrays.asList(new GroupInterestIdDto(1L), new GroupInterestIdDto(2L)));
 		groupCreateDto.setGroupRegions(Arrays.asList(new GroupRegionIdDto(1L), new GroupRegionIdDto(2L)));
 
-
-		mockMvc.perform(
+		ResultActions result = mockMvc.perform(
 			post("/group")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.objToJson(groupCreateDto))
-		)
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.id").isNotEmpty())
+		);
+		result.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").isNotEmpty());
+
+		result.andDo(
+			document(
+				"group-create"
+				, getDocumentRequest()
+				, getDocumentResponse()
+				, requestFields(
+					fieldWithPath("groupName").type(JsonFieldType.STRING).description("그룹 이름"),
+					fieldWithPath("maximumPeople").type(JsonFieldType.NUMBER).description("그룹 최대인원"),
+					fieldWithPath("description").type(JsonFieldType.STRING).description("설명"),
+					fieldWithPath("groupRegions[].regionId").type(JsonFieldType.NUMBER).description("그룹 지역 고유 번호"),
+					fieldWithPath("groupInterests[].id").type(JsonFieldType.NUMBER).description("그룹 관심사 고유번호")
+				), responseFields(
+					fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 그룹 고유번호")
+				)
+			));
 		;
 	}
 
