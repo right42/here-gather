@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -18,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.right42.heregather.domain.common.BaseEntity;
+import me.right42.heregather.domain.group.Group;
 import me.right42.heregather.domain.region.Region;
 
 @Entity
@@ -41,6 +41,10 @@ public class Meeting extends BaseEntity {
 	private LocalDateTime startTime;
 
 	private LocalDateTime endTime;
+
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "group_id")
+	private Group group;
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "region_id")

@@ -1,5 +1,7 @@
 package me.right42.heregather.service.group;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +54,15 @@ public class GroupUserService {
 		GroupUser savedGroupUser = groupUserRepository.save(groupUser);
 
 		setRole(savedGroupUser, RoleType.NORMAL);
+	}
+
+	public boolean isGroupManager(Group group, User user) {
+		GroupUser groupUser = groupUserRepository.findByGroupAndUser(group, user).orElseThrow(EntityNotFoundException::new);
+
+		GroupUserRole groupUserRole = groupUserQueryRepository.findRoleByGroupUser(groupUser);
+		int managerLevel = RoleType.MANAGER.getLevel();
+
+		return managerLevel == groupUserRole.getLevel();
 	}
 
 	@Transactional(readOnly = true)
