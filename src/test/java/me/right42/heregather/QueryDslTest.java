@@ -1,5 +1,7 @@
 package me.right42.heregather;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.Test;

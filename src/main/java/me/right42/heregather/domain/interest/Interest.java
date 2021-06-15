@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
@@ -31,6 +32,7 @@ public class Interest {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "interest_category_id")
 	private InterestCategory category;
 
 }

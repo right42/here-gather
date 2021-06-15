@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
@@ -42,6 +43,7 @@ public class Meeting extends BaseEntity {
 	private LocalDateTime endTime;
 
 	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "region_id")
 	private Region region;
 
 }
