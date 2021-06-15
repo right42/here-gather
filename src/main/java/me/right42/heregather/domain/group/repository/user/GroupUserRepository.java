@@ -7,5 +7,4 @@ import me.right42.heregather.domain.group.type.JoinStatus;
 
 public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
 
-	Long countByGroupAndJoinStatusIs(Long groupId, JoinStatus joinStatus);
 }

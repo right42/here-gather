@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import me.right42.heregather.domain.region.Region;
 import me.right42.heregather.domain.region.repository.RegionQueryRepository;
 import me.right42.heregather.domain.region.repository.RegionRepository;
-import me.right42.heregather.web.dto.region.RegionResponse;
+import me.right42.heregather.web.dto.region.RegionResponseDto;
 import me.right42.heregather.web.dto.region.RegionSearchDto;
 
 @Service
@@ -22,12 +22,12 @@ public class RegionQueryService {
 
 	private final RegionRepository regionRepository;
 
-	public List<RegionResponse> searchRegion(RegionSearchDto regionSearchDto) {
+	public List<RegionResponseDto> searchRegion(RegionSearchDto regionSearchDto) {
 		List<Region> findRegion = regionRepository.findByLevelAndNameContains(regionSearchDto.getLevel(),
 			regionSearchDto.getRegionName());
 
 		return findRegion.stream()
-				.map(e -> new RegionResponse(e.getLevel(), e.getName()))
+				.map(e -> new RegionResponseDto(e.getLevel(), e.getName()))
 				.collect(Collectors.toUnmodifiableList());
 	}
 }

@@ -1,6 +1,7 @@
 package me.right42.heregather.web.group;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import me.right42.heregather.domain.group.Group;
@@ -23,6 +25,7 @@ import me.right42.heregather.web.dto.group.GroupCreateDto;
 import me.right42.heregather.web.dto.group.GroupInterestIdDto;
 import me.right42.heregather.web.dto.group.GroupJoinDto;
 import me.right42.heregather.web.dto.group.GroupRegionIdDto;
+import me.right42.heregather.web.dto.group.GroupUpdateDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -111,6 +114,34 @@ class GroupControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.message").value("해당 그룹은 없는 그룹입니다."))
 		;
+	}
+
+	@Test
+	void 그룹조회() throws Exception {
+
+		mockMvc.perform(
+			get("/groups")
+			.param("keyword", "test")
+		)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data[0].groupName").value("test"))
+		;
+	}
+
+	@Test
+	void 그룹정보변경() throws Exception {
+		GroupUpdateDto dto = new GroupUpdateDto();
+		dto.setId(1L);
+		dto.setName("test1");
+		dto.setMaximumPeople(5);
+
+		mockMvc.perform(
+			patch("/group")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.objToJson(dto))
+		)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.id").isNotEmpty());
 	}
 
 }

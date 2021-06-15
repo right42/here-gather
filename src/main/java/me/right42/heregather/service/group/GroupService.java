@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import me.right42.heregather.domain.group.Group;
-import me.right42.heregather.domain.group.repository.GroupInterestRepository;
+import me.right42.heregather.domain.group.repository.interest.GroupInterestRepository;
 import me.right42.heregather.domain.group.repository.region.GroupRegionRepository;
 import me.right42.heregather.domain.group.repository.GroupRepository;
 import me.right42.heregather.domain.interest.Interest;
@@ -21,11 +21,13 @@ import me.right42.heregather.domain.region.Region;
 import me.right42.heregather.domain.region.repository.RegionRepository;
 import me.right42.heregather.domain.user.User;
 import me.right42.heregather.domain.user.repository.UserRepository;
+import me.right42.heregather.exception.ApplicationException;
 import me.right42.heregather.exception.GroupNotFoundException;
 import me.right42.heregather.exception.GroupUserMaximumException;
 import me.right42.heregather.web.dto.UserDto;
 import me.right42.heregather.web.dto.group.GroupCreateDto;
 import me.right42.heregather.web.dto.group.GroupJoinDto;
+import me.right42.heregather.web.dto.group.GroupUpdateDto;
 
 @Service
 @RequiredArgsConstructor
@@ -106,5 +108,17 @@ public class GroupService {
 					.build();
 			}))
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public Long changeGroup(GroupUpdateDto dto) {
+		Group group = groupRepository.findById(dto.getId()).orElseThrow(GroupNotFoundException::new);
+		Long joinUserCount = groupUserService.getJoinedUserCount(group.getId());
+
+		if(dto.getMaximumPeople() != null && dto.getMaximumPeople() < joinUserCount) {
+			throw new ApplicationException("최대인원 수가 현재참가 인원수보다 적습니다.");
+		}
+		group.change(dto.getName(), dto.getMaximumPeople(), dto.getDescription());
+		return group.getId();
 	}
 }

@@ -13,13 +13,13 @@ public class InterestGroupingDto {
 
 	private final String groupName;
 
-	private final List<SimpleInterestDto> interests;
+	private final List<InterestResponseDto> interests;
 
 	public InterestGroupingDto(String key, List<InterestWithGroup> value) {
 		this.groupName = key;
 
 		interests = value.stream()
-			.map(e -> new SimpleInterestDto(e.getId(), e.getName()))
+			.map(e -> new InterestResponseDto(e.getId(), e.getName()))
 			.collect(Collectors.toUnmodifiableList());
 	}
 }

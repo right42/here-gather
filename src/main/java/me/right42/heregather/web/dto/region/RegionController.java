@@ -19,7 +19,7 @@ public class RegionController {
 	private final RegionQueryService regionQueryService;
 
 	@GetMapping("/regions")
-	public ListResponse<List<RegionResponse>> regions(@RequestBody @Valid RegionSearchDto regionSearchDto){
+	public ListResponse<List<RegionResponseDto>> regions(@RequestBody @Valid RegionSearchDto regionSearchDto){
 		return new ListResponse<>(regionQueryService.searchRegion(regionSearchDto));
 	}
 }

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public class SimpleInterestDto {
+public class InterestResponseDto {
 
 	private final Long id;
 

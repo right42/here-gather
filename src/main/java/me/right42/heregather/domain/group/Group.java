@@ -41,4 +41,10 @@ public class Group extends BaseEntity {
 	public boolean hasJoined(Long joinPeopleCount) {
 		return this.maximumPeople > joinPeopleCount + 1;
 	}
+
+	public void change(String name, Integer maximumPeople, String description) {
+		this.name = name;
+		this.description = description;
+		this.maximumPeople = maximumPeople;
+	}
 }
