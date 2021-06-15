@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import me.right42.heregather.service.interest.InterestQueryService;
 import me.right42.heregather.web.dto.interst.InterestGroupingDto;
-import me.right42.heregather.web.dto.response.RestResponse;
+import me.right42.heregather.web.dto.response.ListResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +23,8 @@ public class InterestController {
 	// }
 
 	@GetMapping("/interests")
-	public RestResponse<List<InterestGroupingDto>> search(@RequestParam(required = false) String keyword){
-		return new RestResponse<>(interestQueryService.findByNameWithGrouping(keyword));
+	public ListResponse<List<InterestGroupingDto>> search(@RequestParam(required = false) String keyword){
+		return new ListResponse<>(interestQueryService.findByNameWithGrouping(keyword));
 	}
 
 }
