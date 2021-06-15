@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://34.64.238.77:5432/heregather
+    username: right42
+    password: right42
+    platform: postgres
