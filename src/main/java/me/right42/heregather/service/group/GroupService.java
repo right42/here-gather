@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.right42.heregather.domain.group.Group;
 import me.right42.heregather.domain.group.repository.GroupInterestRepository;
-import me.right42.heregather.domain.group.repository.GroupRegionRepository;
+import me.right42.heregather.domain.group.repository.region.GroupRegionRepository;
 import me.right42.heregather.domain.group.repository.GroupRepository;
 import me.right42.heregather.domain.interest.Interest;
 import me.right42.heregather.domain.interest.group.GroupInterest;
@@ -21,7 +21,11 @@ import me.right42.heregather.domain.region.Region;
 import me.right42.heregather.domain.region.repository.RegionRepository;
 import me.right42.heregather.domain.user.User;
 import me.right42.heregather.domain.user.repository.UserRepository;
+import me.right42.heregather.exception.GroupNotFoundException;
+import me.right42.heregather.exception.GroupUserMaximumException;
+import me.right42.heregather.web.dto.UserDto;
 import me.right42.heregather.web.dto.group.GroupCreateDto;
+import me.right42.heregather.web.dto.group.GroupJoinDto;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +59,22 @@ public class GroupService {
 		groupRegionRepository.saveAll(groupRegions);
 		groupInterestRepository.saveAll(groupInterests);
 
-		groupUserService.join(user, savedGroup);
+		groupUserService.groupUserInit(user, savedGroup);
 
+		return group.getId();
+	}
+
+	@Transactional
+	public Long joinGroup(GroupJoinDto groupJoinDto, UserDto userDto){
+		User user = userRepository.findById(userDto.getUserNo()).orElseThrow(EntityNotFoundException::new);
+		Group group = groupRepository.findById(groupJoinDto.getGroupId()).orElseThrow(GroupNotFoundException::new);
+
+		Long joinPeopleCount = groupUserService.getJoinedUserCount(group.getId());
+		if(!group.hasJoined(joinPeopleCount)){
+			throw new GroupUserMaximumException();
+		}
+
+		groupUserService.join(group, user);
 		return group.getId();
 	}
 

@@ -6,8 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.right42.heregather.domain.group.Group;
 import me.right42.heregather.domain.group.GroupUser;
-import me.right42.heregather.domain.group.repository.GroupUserRepository;
-import me.right42.heregather.domain.group.repository.GroupUserRoleRepository;
+import me.right42.heregather.domain.group.repository.user.GroupUserQueryRepository;
+import me.right42.heregather.domain.group.repository.user.GroupUserRepository;
+import me.right42.heregather.domain.group.repository.user.GroupUserRoleRepository;
 import me.right42.heregather.domain.group.type.JoinStatus;
 import me.right42.heregather.domain.role.GroupUserRole;
 import me.right42.heregather.domain.role.Role;
@@ -23,10 +24,12 @@ public class GroupUserService {
 
 	private final GroupUserRepository groupUserRepository;
 
+	private final GroupUserQueryRepository groupUserQueryRepository;
+
 	private final RoleService roleService;
 
 	@Transactional
-	public void join(User user, Group group) {
+	public void groupUserInit(User user, Group group) {
 		GroupUser groupUser = GroupUser.builder()
 			.group(group)
 			.user(user)
@@ -34,10 +37,33 @@ public class GroupUserService {
 			.build();
 
 		GroupUser savedGroupUser = groupUserRepository.save(groupUser);
-		Role role = roleService.getRole(RoleType.MANAGER);
+
+		setRole(savedGroupUser, RoleType.MANAGER);
+	}
+
+	@Transactional
+	public void join(Group group, User user) {
+		GroupUser groupUser = GroupUser.builder()
+			.group(group)
+			.user(user)
+			.joinStatus(JoinStatus.PENDING)
+			.build();
+
+		GroupUser savedGroupUser = groupUserRepository.save(groupUser);
+
+		setRole(savedGroupUser, RoleType.NORMAL);
+	}
+
+	@Transactional(readOnly = true)
+	public Long getJoinedUserCount(Long groupId) {
+		return groupUserQueryRepository.countByGroupIdAndJoinStatus(groupId, JoinStatus.JOIN);
+	}
+
+	private void setRole(GroupUser groupUser, RoleType roleType){
+		Role role = roleService.getRole(roleType);
 
 		GroupUserRole groupUserRole = GroupUserRole.builder()
-			.groupUser(savedGroupUser)
+			.groupUser(groupUser)
 			.role(role)
 			.level(role.getLevel())
 			.name(role.getName())
@@ -45,4 +71,5 @@ public class GroupUserService {
 
 		groupUserRoleRepository.save(groupUserRole);
 	}
+
 }

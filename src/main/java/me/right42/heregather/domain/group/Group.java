@@ -37,4 +37,8 @@ public class Group extends BaseEntity {
 
 	@Lob
 	private String description;
+
+	public boolean hasJoined(Long joinPeopleCount) {
+		return this.maximumPeople > joinPeopleCount + 1;
+	}
 }

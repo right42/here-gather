@@ -1,4 +1,4 @@
-package me.right42.heregather.domain.group.repository;
+package me.right42.heregather.domain.group.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
